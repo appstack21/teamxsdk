@@ -1,25 +1,25 @@
 abstract class TXViewStyleInterface {}
 
-abstract class TXViewStyleColorInterface extends TXViewStyleInterface {
+mixin TXViewStyleColorInterface {
   String? backgroundColor;
   String? titleColor;
   String? subtitleColor;
 }
-
-abstract class TXViewStyleBorderInterface extends TXViewStyleInterface {
+mixin TXViewStyleBorderInterface {
   double? borderWidth;
   double? cornerRadius;
   String? borderColor;
 }
 
-abstract class TXCardViewStyleInterface {
+abstract class TXCardViewStyleInterface
+    with TXViewStyleColorInterface, TXViewStyleBorderInterface {
   String? linkTitleColor;
 }
 
-abstract class TXAgreementViewStyleInterface {
+abstract class TXAgreementViewStyleInterface
+    with TXViewStyleColorInterface, TXViewStyleBorderInterface {
   String? buttonBackgroundColor;
   String? buttonTitleColor;
-  String? secondartyButtonTitleColor;
+  String? secondaryButtonTitleColor;
   String? secondaryButtonBackgroundColor;
-  String? secondaryButtonBackGroundColor;
 }

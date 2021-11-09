@@ -25,16 +25,19 @@ extension TXProduct on TXProductType {
     }
   }
 
-  String get name {
+  String get productName {
     switch (this) {
       case TXProductType.purchaseProtect:
-        return "Purchase Protect";
+        return "Chubb Purchase Protect";
+
       case TXProductType.billProtect:
-        return "Bill Protect";
+        return "Chubb Bill Protect";
+
       case TXProductType.bnplProtect:
-        return "BNPL Protect";
+        return "Chubb BNPL Protect";
+
       case TXProductType.eventCancelation:
-        return "Event Cancellation Cover";
+        return "Chubb Event Cancellation Cover";
     }
   }
 
@@ -139,7 +142,6 @@ extension Partner on TXPartnerType {
       default:
         premimum = 5.0;
     }
-    print("Premium $premimum");
     return premimum;
   }
 
@@ -149,6 +151,16 @@ extension Partner on TXPartnerType {
     //check for partner
     double permium = amount * percentage;
     return permium;
+  }
+
+  String get agreementDescription {
+    switch (this) {
+      case TXPartnerType.yuu:
+      case TXPartnerType.grab:
+      case TXPartnerType.dbs:
+      case TXPartnerType.other:
+        return TXStringConstant.agreementInformationText;
+    }
   }
 
   String linkText(String partnerCode) {

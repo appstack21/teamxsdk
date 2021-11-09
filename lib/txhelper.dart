@@ -20,8 +20,8 @@ class TXHelper {
     return currency;
   }
 
-  static double getInsuranceFee(TXConfigurator configurator) {
-    var code = configurator.partner.partnerCode;
+  static double getInsuranceFee(TXPartnerInterface partner) {
+    var code = partner.partnerCode;
     var partnerType = TXPartnerType.other;
     switch (code) {
       case TXParnerCode.yuu:
@@ -36,8 +36,8 @@ class TXHelper {
       default:
         break;
     }
-    print(partnerType);
-    var amount = configurator.partner.amount;
+
+    var amount = partner.amount;
     var pricingModel = partnerType.pricingModel(amount);
     var fee = 0.0;
     if (pricingModel == TXPricingModel.fixed) {
@@ -46,13 +46,40 @@ class TXHelper {
       fee = partnerType.getVariablePremimum(amount);
     }
 
-    var tax = configurator.partner.country.taxation.roundTo(3);
-    print(tax);
+    var tax = partner.country.taxation.roundTo(3);
+
     var insuranceFee = fee + (fee * tax);
     insuranceFee = insuranceFee.roundTo(2);
-    print(insuranceFee);
 
     return insuranceFee;
+  }
+
+  static String getProductName(TXPartnerInterface partner) {
+    return partner.productCode.name;
+  }
+
+  static String getAgreementDesctiptionText(TXPartnerInterface partner) {
+    var partnerType = getPartnerType(partner);
+    return partnerType.agreementDescription;
+  }
+
+  static TXPartnerType getPartnerType(TXPartnerInterface partner) {
+    var code = partner.partnerCode;
+    var partnerType = TXPartnerType.other;
+    switch (code) {
+      case TXParnerCode.yuu:
+        partnerType = TXPartnerType.yuu;
+        break;
+      case TXParnerCode.grab:
+        partnerType = TXPartnerType.grab;
+        break;
+      case TXParnerCode.dbs:
+        partnerType = TXPartnerType.dbs;
+        break;
+      default:
+        break;
+    }
+    return partnerType;
   }
 }
 

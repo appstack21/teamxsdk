@@ -35,7 +35,9 @@ flutter:
 
   # To add assets to your plugin package, add an assets section, like this:
   assets:
-    - assets/images/
+    - assets/images/celebration.png
+    - assets/images/checkmark_selected.png
+    - assets/images/chubb_logo.png
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
@@ -52,6 +54,7 @@ flutter:
       fonts:
         - asset: fonts/AvenirNext-Regular.ttf
         - asset: fonts/AvenirNext-DemiBold.ttf
+          weight: 700
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/custom-fonts/#from-packages

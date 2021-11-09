@@ -6,10 +6,26 @@ class TXTextStyle {
       required FontWeight weight,
       required Color color}) {
     return TextStyle(
-      fontSize: size,
-      fontWeight: weight,
-      color: color,
-    );
+        height: 1.3,
+        fontFamily: 'AvenirNext',
+        fontSize: size,
+        fontWeight: weight,
+        color: color,
+        package: 'teamxsdk');
+  }
+
+  static TextStyle? getTextStyleWithLineHeight(
+      {required double size,
+      required FontWeight weight,
+      required Color color,
+      required double lineHeigh}) {
+    return TextStyle(
+        height: lineHeigh,
+        fontFamily: 'AvenirNext',
+        fontSize: size,
+        fontWeight: weight,
+        color: color,
+        package: 'teamxsdk');
   }
 }
 
@@ -32,9 +48,13 @@ extension HexColor on Color {
 }
 
 class TXColor {
-  static var cardBackGroundColor = Colors.white;
-  // ignore: prefer_const_constructors
-  static var cardBorderColor = Color(0x00848a91);
-  // ignore: prefer_const_constructors
-  static var cardInformationColor = Color(0x00171822);
+  static const primaryBackgroundColor = Colors.white;
+
+  static const cardBorderColor = Color(0xff848a91);
+
+  static const cardInformationColor = Color(0xff171822);
+
+  static const primaryColor = Color(0xfffe9c26);
+
+  static const secondaryBackgroundColor = Color(0xffedf0f4);
 }

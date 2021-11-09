@@ -120,11 +120,7 @@ enum TXAgreementPresentationStyle {
 ///  agreementBuilder.setPresentationStyle(style: style)
 /// ```
 
-class TXAgreementViewStyle
-    implements
-        TXAgreementViewStyleInterface,
-        TXViewStyleColorInterface,
-        TXViewStyleBorderInterface {
+class TXAgreementViewStyle implements TXAgreementViewStyleInterface {
   @override
   String? backgroundColor;
 
@@ -144,10 +140,7 @@ class TXAgreementViewStyle
   double? cornerRadius;
 
   @override
-  String? secondartyButtonTitleColor;
-
-  @override
-  String? secondaryButtonBackGroundColor;
+  String? secondaryButtonTitleColor;
 
   @override
   String? secondaryButtonBackgroundColor;

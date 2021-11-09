@@ -3,7 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:teamxsdk/configurator.dart';
 import 'package:teamxsdk/constants/style.dart';
+import 'package:teamxsdk/models/agreement.dart';
 import 'package:teamxsdk/txhelper.dart';
+import 'package:teamxsdk/views/agreement_view_bottom.dart';
+import 'package:teamxsdk/views/agreement_view_center.dart';
 
 class TXCardView extends StatefulWidget {
   const TXCardView({Key? key, required this.configurator}) : super(key: key);
@@ -16,43 +19,79 @@ class TXCardView extends StatefulWidget {
 class _TXCardViewState extends State<TXCardView> {
   bool isSelected = false;
   double insuranceFee = 0;
-
-  didTapAction(bool isAgree, String? encryptedText) {
-    if (isAgree == false) {
+  didTapOnToggle(bool isChanged) {
+    if (isChanged) {
+      if (widget.configurator.agreement.presentationStyle ==
+          TXAgreementPresentationStyle.center) {
+        showGeneralDialog(
+          context: context,
+          barrierColor: Colors.transparent,
+          pageBuilder: (_, __, ___) => TXAgreementViewCenter(
+              configurator: widget.configurator, callBack: didTapAction),
+        );
+      } else {
+        showModalBottomSheet<dynamic>(
+            isScrollControlled: true,
+            isDismissible: false,
+            context: context,
+            builder: (context) {
+              return TXAgreementViewBottom(
+                  configurator: widget.configurator, callBack: didTapAction);
+            });
+      }
+    } else {
       setState(() {
-        isSelected = isAgree;
+        isSelected = isChanged;
       });
     }
+  }
+
+  didTapAction(bool isAgree, String? encryptedText) {
+    print("callBack");
+    setState(() {
+      isSelected = isAgree;
+    });
     widget.configurator.completionBlock(encryptedText, insuranceFee, isAgree);
   }
 
   Text getInsuranceMessage() {
     // get text
+    Color? subTitleColor = HexColor.fromHex(
+        widget.configurator.insuranceCard.cardViewStyle?.subtitleColor);
     var text = TXHelper.getInsuranceInfoMessage(widget.configurator.partner);
     return Text(
       text,
-      style: TXTextStyle.getTextStyle(
-          size: 15, weight: FontWeight.normal, color: Colors.black),
+      style: TXTextStyle.getTextStyleWithLineHeight(
+          size: 15,
+          weight: FontWeight.normal,
+          color: subTitleColor ?? Colors.black,
+          lineHeigh: 1.3),
     );
   }
 
   Widget insuranceFeeMessage() {
     var text = TXHelper.getTitleText(widget.configurator.partner);
-    var fee = TXHelper.getInsuranceFee(widget.configurator);
+    var fee = TXHelper.getInsuranceFee(widget.configurator.partner);
+    Color? titleColor = HexColor.fromHex(
+        widget.configurator.insuranceCard.cardViewStyle?.titleColor);
     String feeText =
         " ${TXHelper.getCurrency(widget.configurator.partner.country)} $fee ";
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
       child: RichText(
         text: TextSpan(
           text: text,
           style: TXTextStyle.getTextStyle(
-              size: 17, weight: FontWeight.normal, color: Colors.black),
+              size: 17,
+              weight: FontWeight.normal,
+              color: titleColor ?? Colors.black),
           children: <TextSpan>[
             TextSpan(
                 text: feeText,
                 style: TXTextStyle.getTextStyle(
-                    size: 17, weight: FontWeight.bold, color: Colors.black)),
+                    size: 17,
+                    weight: FontWeight.bold,
+                    color: titleColor ?? Colors.black)),
           ],
         ),
       ),
@@ -82,8 +121,7 @@ class _TXCardViewState extends State<TXCardView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
-      // width: 320,
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
       decoration: decoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -94,30 +132,37 @@ class _TXCardViewState extends State<TXCardView> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: CupertinoSwitch(
                     // trackColor: Colors.grey,
                     value: isSelected,
-                    onChanged: (changed) {
-                      setState(() {
-                        isSelected = changed;
-                      });
+                    onChanged: (isChange) {
+                      didTapOnToggle(isChange);
                     }),
               ),
               Expanded(
-                child: insuranceFeeMessage(),
+                child: Container(
+                  child: insuranceFeeMessage(),
+                  color: Colors.transparent,
+                ),
               )
             ],
           ),
-          const SizedBox(
-            height: 25,
-          ),
+          // const SizedBox(
+          //   height: 0,
+          // ),
           Padding(
-              padding: const EdgeInsets.all(8.0), child: getInsuranceMessage()),
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              child: getInsuranceMessage(),
+              color: Colors.transparent,
+            ),
+          ),
           const SizedBox(
-            height: 25,
+            height: 5,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -134,19 +179,22 @@ class _TXCardViewState extends State<TXCardView> {
                         color: Colors.blue),
                   ),
                 ),
-                onTap: () {
-                  print("tapped");
-                },
+                onTap: () {},
               ),
               const Expanded(child: Text("")),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 8.0, 0),
-                child: Text("CHUBBB"),
-              )
+              const Image(
+                  width: 110,
+                  height: 10,
+                  image: AssetImage('assets/images/chubb_logo.png',
+                      package: 'teamxsdk')),
+              // const Padding(
+              //   padding: EdgeInsets.fromLTRB(0, 0, 8.0, 0),
+              //   child: Text("CHUBBB"),
+              // )
             ],
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
         ],
       ),

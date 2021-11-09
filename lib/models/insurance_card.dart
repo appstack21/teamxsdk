@@ -3,7 +3,7 @@ import 'package:teamxsdk/models/view_interfaces.dart';
 abstract class TXInsuranceCardInterface {
   late TXCardType cardType;
   late TXCardSelectionStyle selectionStyle;
-  TXCardViewStyle? cardViewStyle;
+  TXCardViewStyleInterface? cardViewStyle;
 }
 
 /// A Insurance Card Data Model
@@ -38,7 +38,7 @@ class TXInsuranceCard implements TXInsuranceCardInterface {
   TXCardType cardType;
 
   @override
-  TXCardViewStyle? cardViewStyle;
+  TXCardViewStyleInterface? cardViewStyle;
 
   @override
   TXCardSelectionStyle selectionStyle;
@@ -104,11 +104,7 @@ enum TXCardSelectionStyle {
 /// // Set the card style using card builder
 ///  cardBuilder.setCardViewStyle(cardViewStyle: style)
 /// ```
-class TXCardViewStyle
-    implements
-        TXCardViewStyleInterface,
-        TXViewStyleColorInterface,
-        TXViewStyleBorderInterface {
+class TXCardViewStyle implements TXCardViewStyleInterface {
   @override
   String? backgroundColor;
 

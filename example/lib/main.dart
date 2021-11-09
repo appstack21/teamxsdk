@@ -3,7 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:teamxsdk/teamxsdk.dart';
-import 'package:teamxsdk/card_view.dart';
+import 'package:teamxsdk/views/card_view.dart';
 import 'package:teamxsdk/configurator.dart';
 import 'package:teamxsdk/models/partner.dart';
 import 'package:teamxsdk/config.dart';
@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   completionBlock(
       String? encryptedText, double? insuranceFee, bool isAccepted) {
+    print("isAccepted $isAccepted");
     print("Completion Block Called $insuranceFee");
   }
 
@@ -57,13 +58,12 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  TXConfigurator getConfigurator() {
     TXPartnerInterface partner = TXPartner(
         partnerCode: 'YU001',
         productCode: TXProductType.purchaseProtect,
         amount: 50001,
-        country: TXCountry.hongKong);
+        country: TXCountry.singapore);
     TXCardViewStyle style = TXCardViewStyle();
     // style.borderColor = Colors.accents.toString();
     TXInsuranceCardInterface insurance = TXInsuranceCard(
@@ -78,16 +78,56 @@ class _MyAppState extends State<MyApp> {
         agreement: agreement,
         context: context,
         completionBlock: completionBlock);
+
+    return configurator;
+  }
+
+  TXConfigurator getConfigurator2() {
+    TXPartnerInterface partner = TXPartner(
+        partnerCode: 'YU001',
+        productCode: TXProductType.billProtect,
+        amount: 50001,
+        country: TXCountry.hongKong);
+    TXCardViewStyle style = TXCardViewStyle();
+    // style.borderColor = Colors.accents.toString();
+    TXInsuranceCardInterface insurance = TXInsuranceCard(
+        cardType: TXCardType.short,
+        selectionStyle: TXCardSelectionStyle.checkBox,
+        cardViewStyle: style);
+    TXAgreementInterface agreement =
+        TXAgreement(presentationStyle: TXAgreementPresentationStyle.bottom);
+    TXConfigurator configurator = TXConfigurator(
+        partner: partner,
+        insuranceCard: insurance,
+        agreement: agreement,
+        context: context,
+        completionBlock: completionBlock);
+
+    return configurator;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Demo App'),
         ),
-        body: Center(
-            child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: TXCardView(configurator: configurator),
-        )),
+        body: SingleChildScrollView(
+          child: Center(
+              child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                TXCardView(configurator: getConfigurator()),
+                SizedBox(
+                  height: 20,
+                ),
+                TXCardView(configurator: getConfigurator2())
+              ],
+            ),
+          )),
+        ),
       ),
     );
   }
