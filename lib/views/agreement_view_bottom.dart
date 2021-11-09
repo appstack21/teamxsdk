@@ -17,7 +17,10 @@ class TXAgreementViewBottom extends StatefulWidget {
 class _TXAgreementViewBottomState extends State<TXAgreementViewBottom> {
   @override
   Widget build(BuildContext context) {
-    return TXAgreementView(
-        callBack: widget.callBack, configurator: widget.configurator);
+    return SizedBox(
+      height: 450,
+      child: TXAgreementView(
+          callBack: widget.callBack, configurator: widget.configurator),
+    );
   }
 }

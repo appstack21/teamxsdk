@@ -35,8 +35,10 @@ class _TXCardViewState extends State<TXCardView> {
             isDismissible: false,
             context: context,
             builder: (context) {
-              return TXAgreementViewBottom(
-                  configurator: widget.configurator, callBack: didTapAction);
+              return Container(
+                child: TXAgreementViewBottom(
+                    configurator: widget.configurator, callBack: didTapAction),
+              );
             });
       }
     } else {
@@ -72,6 +74,9 @@ class _TXCardViewState extends State<TXCardView> {
   Widget insuranceFeeMessage() {
     var text = TXHelper.getTitleText(widget.configurator.partner);
     var fee = TXHelper.getInsuranceFee(widget.configurator.partner);
+    setState(() {
+      insuranceFee = fee;
+    });
     Color? titleColor = HexColor.fromHex(
         widget.configurator.insuranceCard.cardViewStyle?.titleColor);
     String feeText =

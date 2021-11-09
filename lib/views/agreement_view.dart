@@ -31,11 +31,11 @@ class _TXAgreementViewState extends State<TXAgreementView> {
       textAlign: TextAlign.center,
       text: TextSpan(
         text: titleText,
-        style: TXTextStyle.getTextStyleWithLineHeight(
-            size: 17,
-            weight: FontWeight.normal,
-            color: Colors.black,
-            lineHeigh: 1.5),
+        style: TXTextStyle.getTextStyle(
+          size: 17,
+          weight: FontWeight.normal,
+          color: Colors.black,
+        ),
         children: <TextSpan>[
           TextSpan(
               text: billProtectText,
@@ -84,7 +84,7 @@ class _TXAgreementViewState extends State<TXAgreementView> {
         color: backgroundColor ?? Colors.white,
         border: Border.all(
             color: borderColor ?? Colors.grey, width: borderWidth ?? 1.0),
-        borderRadius: BorderRadius.all(Radius.circular(cornerRadius ?? 5.0)));
+        borderRadius: BorderRadius.all(Radius.circular(cornerRadius ?? 25.0)));
   }
 
   BoxDecoration agreeButtonDecoration() {
@@ -114,8 +114,6 @@ class _TXAgreementViewState extends State<TXAgreementView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width - 20,
-      height: 450,
       decoration: const BoxDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
