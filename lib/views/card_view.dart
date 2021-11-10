@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:teamxsdk/configurator.dart';
 import 'package:teamxsdk/constants/style.dart';
 import 'package:teamxsdk/models/agreement.dart';
 import 'package:teamxsdk/txhelper.dart';
+import 'package:teamxsdk/utility/encryption_manager.dart';
+import 'package:teamxsdk/utility/insurance_manager.dart';
 import 'package:teamxsdk/views/agreement_view_bottom.dart';
 import 'package:teamxsdk/views/agreement_view_center.dart';
 
@@ -20,6 +21,16 @@ class _TXCardViewState extends State<TXCardView> {
   bool isSelected = false;
   double insuranceFee = 0;
   didTapOnToggle(bool isChanged) {
+    var isShowModel =
+        TXInsuranceFeeManager.showModel(widget.configurator.partner);
+    if (!isShowModel) {
+      final text =
+          TXEnryptionManager.encrypt(partner: widget.configurator.partner);
+      print("Encrypted Text $text");
+      widget.configurator.completionBlock(text, insuranceFee, true);
+      return;
+    }
+
     if (isChanged) {
       if (widget.configurator.agreement.presentationStyle ==
           TXAgreementPresentationStyle.center) {
@@ -35,21 +46,19 @@ class _TXCardViewState extends State<TXCardView> {
             isDismissible: false,
             context: context,
             builder: (context) {
-              return Container(
-                child: TXAgreementViewBottom(
-                    configurator: widget.configurator, callBack: didTapAction),
-              );
+              return TXAgreementViewBottom(
+                  configurator: widget.configurator, callBack: didTapAction);
             });
       }
     } else {
       setState(() {
         isSelected = isChanged;
       });
+      widget.configurator.completionBlock(null, insuranceFee, false);
     }
   }
 
   didTapAction(bool isAgree, String? encryptedText) {
-    print("callBack");
     setState(() {
       isSelected = isAgree;
     });
@@ -73,7 +82,8 @@ class _TXCardViewState extends State<TXCardView> {
 
   Widget insuranceFeeMessage() {
     var text = TXHelper.getTitleText(widget.configurator.partner);
-    var fee = TXHelper.getInsuranceFee(widget.configurator.partner);
+    var fee =
+        TXInsuranceFeeManager.getInsuranceFee(widget.configurator.partner);
     setState(() {
       insuranceFee = fee;
     });

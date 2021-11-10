@@ -8,8 +8,11 @@ environment:
   flutter: ">=2.5.0"
 
 dependencies:
+  crypto: ^3.0.1
+  encrypt: ^5.0.1
   flutter:
     sdk: flutter
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

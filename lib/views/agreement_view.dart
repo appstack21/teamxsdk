@@ -7,6 +7,7 @@ import 'package:teamxsdk/configurator.dart';
 import 'package:teamxsdk/constants/constants.dart';
 import 'package:teamxsdk/constants/style.dart';
 import 'package:teamxsdk/models/partner.dart';
+import 'package:teamxsdk/utility/encryption_manager.dart';
 
 import '../txhelper.dart';
 
@@ -63,6 +64,32 @@ class _TXAgreementViewState extends State<TXAgreementView> {
           style: TXTextStyle.getTextStyle(
               size: 17, weight: FontWeight.normal, color: Colors.black),
         ));
+  }
+
+  Widget agreeButtonText() {
+    final partner = TXHelper.getPartnerType(widget.configurator.partner);
+    final title = partner.agreeButtonTitle;
+    final Color? titleColor = HexColor.fromHex(
+        widget.configurator.agreement.viewStyle?.buttonTitleColor);
+    return Text(
+      title,
+      textAlign: TextAlign.center,
+      style: TXTextStyle.getTextStyle(
+          size: 23, weight: FontWeight.bold, color: titleColor ?? Colors.white),
+    );
+  }
+
+  Widget cancelButtonText() {
+    final partner = TXHelper.getPartnerType(widget.configurator.partner);
+    final title = partner.cancelButtonText;
+    final Color? titleColor = HexColor.fromHex(
+        widget.configurator.agreement.viewStyle?.secondaryButtonTitleColor);
+    return Text(
+      title,
+      textAlign: TextAlign.center,
+      style: TXTextStyle.getTextStyle(
+          size: 14, weight: FontWeight.bold, color: titleColor ?? Colors.black),
+    );
   }
 
   BoxDecoration decoration() {
@@ -142,13 +169,12 @@ class _TXAgreementViewState extends State<TXAgreementView> {
             height: 60,
             decoration: agreeButtonDecoration(),
             child: CupertinoButton(
-                child: Text(
-                  "AGREE",
-                  style: TXTextStyle.getTextStyle(
-                      size: 23, weight: FontWeight.bold, color: Colors.white),
-                ),
+                child: agreeButtonText(),
                 onPressed: () {
-                  widget.callBack(true, null);
+                  final text = TXEnryptionManager.encrypt(
+                      partner: widget.configurator.partner);
+
+                  widget.callBack(true, text);
                   Navigator.of(context, rootNavigator: true).pop("Discard");
                 }),
           ),
@@ -160,12 +186,9 @@ class _TXAgreementViewState extends State<TXAgreementView> {
               height: 60,
               decoration: cancelButtonDecoration(),
               child: CupertinoButton(
-                  child: Text(
-                    "NO, JUST PAY THE BILL ",
-                    style: TXTextStyle.getTextStyle(
-                        size: 14, weight: FontWeight.bold, color: Colors.black),
-                  ),
+                  child: cancelButtonText(),
                   onPressed: () {
+                    widget.callBack(false, null);
                     Navigator.of(context, rootNavigator: true).pop("Discard");
                   })),
           const SizedBox(

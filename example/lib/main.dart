@@ -27,7 +27,8 @@ class _MyAppState extends State<MyApp> {
   completionBlock(
       String? encryptedText, double? insuranceFee, bool isAccepted) {
     print("isAccepted $isAccepted");
-    print("Completion Block Called $insuranceFee");
+    print("Fee $insuranceFee");
+    print("Text $encryptedText");
   }
 
   @override

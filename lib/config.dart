@@ -163,11 +163,43 @@ extension Partner on TXPartnerType {
     }
   }
 
-  String linkText(String partnerCode) {
-    return "Learn More...";
+  String get linkText {
+    switch (this) {
+      case TXPartnerType.yuu:
+      case TXPartnerType.grab:
+      case TXPartnerType.dbs:
+      case TXPartnerType.other:
+        return TXStringConstant.cardLinkTitle;
+    }
   }
 
-  bool showAgreementModel(String partnerCode) {
-    return true;
+  String get agreeButtonTitle {
+    switch (this) {
+      case TXPartnerType.yuu:
+      case TXPartnerType.grab:
+      case TXPartnerType.dbs:
+      case TXPartnerType.other:
+        return TXStringConstant.agreeButtonTitle;
+    }
+  }
+
+  String get cancelButtonText {
+    switch (this) {
+      case TXPartnerType.yuu:
+      case TXPartnerType.grab:
+      case TXPartnerType.dbs:
+      case TXPartnerType.other:
+        return TXStringConstant.cancelButtonTitle;
+    }
+  }
+
+  bool showAgreementModel() {
+    switch (this) {
+      case TXPartnerType.yuu:
+      case TXPartnerType.grab:
+      case TXPartnerType.dbs:
+      case TXPartnerType.other:
+        return true;
+    }
   }
 }
