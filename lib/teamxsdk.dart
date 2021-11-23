@@ -1,20 +1,22 @@
-import 'dart:async';
+// ignore_for_file: unused_import
 
-import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
+import 'src/views/card_view.dart';
+export 'src/views/card_view.dart';
 
-class Teamxsdk {
-  static const MethodChannel _channel = MethodChannel('teamxsdk');
+import 'src/config/configurator.dart';
+export 'src/config/configurator.dart';
 
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
+import 'src/models/partner.dart';
+export 'src/models/partner.dart';
 
-  Widget pCard() {
-    return Container(
-      height: 200,
-      color: Colors.amber,
-    );
-  }
-}
+import 'src/config/config.dart';
+export 'src/config/config.dart';
+
+import 'src/models/insurance_card.dart';
+export 'src/models/insurance_card.dart';
+
+import 'src/models/agreement.dart';
+export 'src/models/agreement.dart';
+
+import 'src/models/view_interfaces.dart';
+export 'src/models/view_interfaces.dart';
