@@ -171,9 +171,7 @@ class _TXAgreementViewState extends State<TXAgreementView> {
                 onPressed: () {
                   final text = TXEnryptionManager.encrypt(
                       partner: widget.configurator.partner);
-
                   widget.callBack(true, text);
-                  Navigator.of(context).pop();
                 }),
           ),
           const SizedBox(
@@ -187,7 +185,6 @@ class _TXAgreementViewState extends State<TXAgreementView> {
                   child: cancelButtonText(),
                   onPressed: () {
                     widget.callBack(false, null);
-                    Navigator.of(context, rootNavigator: true).pop("Discard");
                   })),
           const SizedBox(
             height: 0,

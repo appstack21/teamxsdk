@@ -4,6 +4,7 @@ import 'package:teamxsdk/src/config/configurator.dart';
 import 'package:teamxsdk/src/config/txhelper.dart';
 import 'package:teamxsdk/src/constants/style.dart';
 import 'package:teamxsdk/src/models/agreement.dart';
+import 'package:teamxsdk/src/models/insurance_card.dart';
 import 'package:teamxsdk/src/utility/encryption_manager.dart';
 import 'package:teamxsdk/src/utility/insurance_manager.dart';
 import 'package:teamxsdk/src/views/agreement_view_bottom.dart';
@@ -147,17 +148,18 @@ class _TXCardViewState extends State<TXCardView> {
             height: 10,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: CupertinoSwitch(
-                    // trackColor: Colors.grey,
-                    value: isSelected,
-                    onChanged: (isChange) {
-                      didTapOnToggle(isChange);
-                    }),
+              const SizedBox(
+                width: 8,
+              ),
+              widget.configurator.insuranceCard.selectionStyle ==
+                      TXCardSelectionStyle.checkBox
+                  ? checkboxContainer()
+                  : switchContainer(),
+              const SizedBox(
+                width: 16,
               ),
               Expanded(
                 child: Container(
@@ -203,10 +205,6 @@ class _TXCardViewState extends State<TXCardView> {
                   height: 10,
                   image: AssetImage('assets/images/chubb_logo.png',
                       package: 'teamxsdk')),
-              // const Padding(
-              //   padding: EdgeInsets.fromLTRB(0, 0, 8.0, 0),
-              //   child: Text("CHUBBB"),
-              // )
             ],
           ),
           const SizedBox(
@@ -215,5 +213,38 @@ class _TXCardViewState extends State<TXCardView> {
         ],
       ),
     );
+  }
+
+  Widget checkboxContainer() {
+    return GestureDetector(
+      onTap: () {
+        didTapOnToggle(!isSelected);
+      },
+      child: Container(
+          width: 40,
+          height: 40,
+          decoration: const BoxDecoration(
+              color: Color(0xFFF1F3F6),
+              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+          child: isSelected
+              ? const Center(
+                  child: Icon(
+                    Icons.done,
+                    color: Color(0xFFFFAC30),
+                    size: 40,
+                  ),
+                )
+              : null),
+    );
+  }
+
+  Widget switchContainer() {
+    return CupertinoSwitch(
+        // trackColor: Colors.grey,
+        activeColor: TXColor.primaryColor,
+        value: isSelected,
+        onChanged: (isChange) {
+          didTapOnToggle(isChange);
+        });
   }
 }

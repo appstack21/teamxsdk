@@ -15,12 +15,17 @@ class TXAgreementViewBottom extends StatefulWidget {
 }
 
 class _TXAgreementViewBottomState extends State<TXAgreementViewBottom> {
+  didTapActionButton(bool isAccepted, String? encryptedText) {
+    widget.callBack(isAccepted, encryptedText);
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 450,
       child: TXAgreementView(
-          callBack: widget.callBack, configurator: widget.configurator),
+          callBack: didTapActionButton, configurator: widget.configurator),
     );
   }
 }
