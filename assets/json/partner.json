@@ -1,0 +1,32 @@
+{
+  "partner": {
+    "code": "YUU001",
+    "name": "YUU",
+    "agreementText": "You consent to \"US\" sharing your personal details including name, email, contact number to Chubb for the purpose of policy issuance & servicing",
+    "cardLinkText": "Learn More",
+    "agreeButtonText": "AGREE",
+    "cancelButtonText": "NO, JUST PAY THE BILL",
+    
+    
+    "products": [
+      {
+        "code": "PURCHASEPROTECT",
+        "name": "Purchase Protect",
+        "productDescription": "Protect this purchase for",
+        "insuranceInfo": "This insurance covers all your purchases against any accidental damage for 30 days from purchase date."
+      },
+      {
+        "code": "EVENTCANCELLATIONPROTECT",
+        "name": "Event Cancellation Cover",
+        "productDescription": "Protect this bill for",
+        "insuranceInfo": "This insurance pays upto 5 times of your event price in case you are unable to attend due to an accident."
+      }
+    ],
+    
+    
+    "pricingModel" : ["FIXED", "VARIABLE"],
+    "premiums": [2.0,5.0,10.0,20.0],
+    "showWebView": true,
+    "showAgreementModel": true
+  }
+}

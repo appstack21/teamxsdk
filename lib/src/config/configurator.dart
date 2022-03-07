@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teamxsdk/src/models/agreement.dart';
 import 'package:teamxsdk/src/models/insurance_card.dart';
-import 'package:teamxsdk/src/models/partner.dart';
 
 /// A Configurator class for setting up TeamX SDK Data
 
@@ -38,7 +37,6 @@ import 'package:teamxsdk/src/models/partner.dart';
 /// ```
 ///
 class TXConfigurator {
-  late TXPartnerInterface partner;
   late TXInsuranceCardInterface insuranceCard;
   late TXAgreementInterface agreement;
   late BuildContext context;
@@ -46,8 +44,7 @@ class TXConfigurator {
       completionBlock;
 
   TXConfigurator(
-      {required this.partner,
-      required this.insuranceCard,
+      {required this.insuranceCard,
       required this.agreement,
       required this.context,
       required this.completionBlock});

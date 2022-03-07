@@ -1,14 +1,14 @@
 // ignore: file_names
 import 'package:teamxsdk/src/config/config.dart';
+import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
 
-abstract class TXPartnerInterface {
-  late String partnerCode;
-  late TXProductType productCode;
+abstract class TXBillDataInterFace {
+  late String product;
   late double amount;
   late TXCountry country;
 }
 
-class TXPartner implements TXPartnerInterface {
+class TXBillData implements TXBillDataInterFace {
   @override
   double amount;
 
@@ -16,14 +16,23 @@ class TXPartner implements TXPartnerInterface {
   TXCountry country;
 
   @override
-  String partnerCode;
+  String product;
 
-  @override
-  TXProductType productCode;
+  TXProductCode get productCode {
+    if (product == TXProductCode.purchaseProtect.productName) {
+      return TXProductCode.purchaseProtect;
+    } else if (product == TXProductCode.billProtect.productName) {
+      return TXProductCode.billProtect;
+    } else if (product == TXProductCode.bnplProtect.productName) {
+      return TXProductCode.bnplProtect;
+    } else {
+      return TXProductCode.eventCancelation;
+    }
+  }
 
-  TXPartner(
-      {required this.partnerCode,
-      required this.country,
-      required this.productCode,
-      required this.amount});
+  TXBillData({
+    required this.product,
+    required this.amount,
+    required this.country,
+  });
 }

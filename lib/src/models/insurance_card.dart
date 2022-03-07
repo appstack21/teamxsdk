@@ -33,7 +33,7 @@ abstract class TXInsuranceCardInterface {
 ///
 ///  ```
 ///
-class TXInsuranceCard implements TXInsuranceCardInterface {
+class TXInsuranceLayout implements TXInsuranceCardInterface {
   @override
   TXCardType cardType;
 
@@ -43,10 +43,16 @@ class TXInsuranceCard implements TXInsuranceCardInterface {
   @override
   TXCardSelectionStyle selectionStyle;
 
-  TXInsuranceCard(
+  TXInsuranceLayout(
       {required this.cardType,
       required this.selectionStyle,
       this.cardViewStyle});
+
+  static defaultLayout() {
+    return TXInsuranceLayout(
+        cardType: TXCardType.short,
+        selectionStyle: TXCardSelectionStyle.checkBox);
+  }
 }
 
 //Card Type

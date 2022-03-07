@@ -12,6 +12,7 @@ dependencies:
   encrypt: ^5.0.1
   flutter:
     sdk: flutter
+  http: ^0.13.4
   intl: ^0.17.0
 
 dev_dependencies:
@@ -41,6 +42,7 @@ flutter:
     - assets/images/celebration.png
     - assets/images/checkmark_selected.png
     - assets/images/chubb_logo.png
+    - assets/json/partner.json
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages

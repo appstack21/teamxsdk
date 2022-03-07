@@ -7,14 +7,18 @@ import 'package:teamxsdk/src/config/configurator.dart';
 import 'package:teamxsdk/src/config/txhelper.dart';
 import 'package:teamxsdk/src/constants/constants.dart';
 import 'package:teamxsdk/src/constants/style.dart';
+import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
 import 'package:teamxsdk/src/utility/encryption_manager.dart';
+import 'package:teamxsdk/src/views/agreement/agreement_view_model.dart';
 
 class TXAgreementView extends StatefulWidget {
   final Function callBack;
-  final TXConfigurator configurator;
-  const TXAgreementView(
-      {Key? key, required this.callBack, required this.configurator})
-      : super(key: key);
+  final TXAgreementViewModel viewModel;
+  const TXAgreementView({
+    Key? key,
+    required this.callBack,
+    required this.viewModel,
+  }) : super(key: key);
 
   @override
   _TXAgreementViewState createState() => _TXAgreementViewState();
@@ -23,9 +27,10 @@ class TXAgreementView extends StatefulWidget {
 class _TXAgreementViewState extends State<TXAgreementView> {
   Widget getTitleText() {
     String titleText = "${TXStringConstant.agreementTitleText} \n";
-    TXProductType productType = widget.configurator.partner.productCode;
-    String billProtectText = productType.productName;
 
+    TXProduct? selectedProduct = widget.viewModel.partner
+        .getProductDetailFromProductCode(widget.viewModel.billData.productCode);
+    String billProtectText = selectedProduct?.name ?? "";
     var ritchText = RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
@@ -52,8 +57,7 @@ class _TXAgreementViewState extends State<TXAgreementView> {
 
   Widget getAgreementDescriptionText() {
     // get text
-    var text =
-        TXHelper.getAgreementDesctiptionText(widget.configurator.partner);
+    var text = widget.viewModel.partner.agreementText ?? "";
     return Padding(
         padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
         child: Text(
@@ -65,10 +69,10 @@ class _TXAgreementViewState extends State<TXAgreementView> {
   }
 
   Widget agreeButtonText() {
-    final partner = TXHelper.getPartnerType(widget.configurator.partner);
-    final title = partner.agreeButtonTitle;
-    final Color? titleColor = HexColor.fromHex(
-        widget.configurator.agreement.viewStyle?.buttonTitleColor);
+    final title = widget.viewModel.partner.agreeButtonText ??
+        TXStringConstant.agreeButtonTitle;
+    final Color? titleColor =
+        HexColor.fromHex(widget.viewModel.layout.viewStyle?.buttonTitleColor);
     return Text(
       title,
       textAlign: TextAlign.center,
@@ -78,10 +82,11 @@ class _TXAgreementViewState extends State<TXAgreementView> {
   }
 
   Widget cancelButtonText() {
-    final partner = TXHelper.getPartnerType(widget.configurator.partner);
-    final title = partner.cancelButtonText;
+    final title = widget.viewModel.partner.cancelButtonText ??
+        TXStringConstant.cancelButtonTitle;
+    ;
     final Color? titleColor = HexColor.fromHex(
-        widget.configurator.agreement.viewStyle?.secondaryButtonTitleColor);
+        widget.viewModel.layout.viewStyle?.secondaryButtonTitleColor);
     return Text(
       title,
       textAlign: TextAlign.center,
@@ -92,18 +97,17 @@ class _TXAgreementViewState extends State<TXAgreementView> {
 
   BoxDecoration decoration() {
     //Setting backgroundColor
-    Color? backgroundColor = HexColor.fromHex(
-        widget.configurator.agreement.viewStyle?.backgroundColor);
+    Color? backgroundColor =
+        HexColor.fromHex(widget.viewModel.layout.viewStyle?.backgroundColor);
     //Setting borderWithd
-    double? borderWidth = widget.configurator.agreement.viewStyle?.borderWidth;
+    double? borderWidth = widget.viewModel.layout.viewStyle?.borderWidth;
 
     //Setting borderColor
     Color? borderColor =
-        HexColor.fromHex(widget.configurator.agreement.viewStyle?.borderColor);
+        HexColor.fromHex(widget.viewModel.layout.viewStyle?.borderColor);
 
     //Setting cornerRadius
-    double? cornerRadius =
-        widget.configurator.agreement.viewStyle?.cornerRadius;
+    double? cornerRadius = widget.viewModel.layout.viewStyle?.cornerRadius;
 
     return BoxDecoration(
         color: backgroundColor ?? Colors.white,
@@ -114,10 +118,9 @@ class _TXAgreementViewState extends State<TXAgreementView> {
 
   BoxDecoration agreeButtonDecoration() {
     Color? backgroundColor = HexColor.fromHex(
-        widget.configurator.agreement.viewStyle?.buttonBackgroundColor);
+        widget.viewModel.layout.viewStyle?.buttonBackgroundColor);
 
-    double? cornerRadius =
-        widget.configurator.agreement.viewStyle?.cornerRadius;
+    double? cornerRadius = widget.viewModel.layout.viewStyle?.cornerRadius;
 
     return BoxDecoration(
         color: backgroundColor ?? TXColor.primaryColor,
@@ -125,11 +128,10 @@ class _TXAgreementViewState extends State<TXAgreementView> {
   }
 
   BoxDecoration cancelButtonDecoration() {
-    Color? backgroundColor = HexColor.fromHex(widget
-        .configurator.agreement.viewStyle?.secondaryButtonBackgroundColor);
+    Color? backgroundColor = HexColor.fromHex(
+        widget.viewModel.layout.viewStyle?.secondaryButtonBackgroundColor);
 
-    double? cornerRadius =
-        widget.configurator.agreement.viewStyle?.cornerRadius;
+    double? cornerRadius = widget.viewModel.layout.viewStyle?.cornerRadius;
 
     return BoxDecoration(
         color: backgroundColor ?? TXColor.secondaryBackgroundColor,
@@ -170,7 +172,7 @@ class _TXAgreementViewState extends State<TXAgreementView> {
                 child: agreeButtonText(),
                 onPressed: () {
                   final text = TXEnryptionManager.encrypt(
-                      partner: widget.configurator.partner);
+                      partner: widget.viewModel.partner);
                   widget.callBack(true, text);
                 }),
           ),

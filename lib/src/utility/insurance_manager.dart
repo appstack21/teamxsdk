@@ -1,44 +1,25 @@
 import 'package:teamxsdk/src/config/config.dart';
 import 'package:teamxsdk/src/config/txhelper.dart';
+import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
 import 'package:teamxsdk/src/models/partner.dart';
 
 class TXInsuranceFeeManager {
-  static double getInsuranceFee(TXPartnerInterface partner) {
-    var code = partner.partnerCode;
-    var partnerType = TXPartnerType.other;
-    switch (code) {
-      case TXParnerCode.yuu:
-        partnerType = TXPartnerType.yuu;
-        break;
-      case TXParnerCode.grab:
-        partnerType = TXPartnerType.grab;
-        break;
-      case TXParnerCode.dbs:
-        partnerType = TXPartnerType.dbs;
-        break;
-      default:
-        break;
-    }
-
-    var amount = partner.amount;
-    var pricingModel = partnerType.pricingModel(amount);
+  static double getInsuranceFee(
+      {required TXPartner partner, required TXBillData billData}) {
+    var amount = billData.amount;
+    var pricingModel = partner.getPricingModel(amount);
     var fee = 0.0;
     if (pricingModel == TXPricingModel.fixed) {
-      fee = partnerType.getFixPremium(amount);
+      fee = partner.getFixPremium(amount);
     } else {
-      fee = partnerType.getVariablePremimum(amount);
+      fee = partner.getVariablePremimum(amount);
     }
 
-    var tax = partner.country.taxation.roundTo(3);
+    var tax = billData.country.taxation.roundTo(3);
 
     var insuranceFee = fee + (fee * tax);
     insuranceFee = insuranceFee.roundTo(2);
 
     return insuranceFee;
-  }
-
-  static bool showModel(TXPartnerInterface partner) {
-    var partnerType = TXHelper.getPartnerType(partner);
-    return partnerType.showAgreementModel();
   }
 }

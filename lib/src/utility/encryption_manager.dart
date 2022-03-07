@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:encrypt/encrypt.dart';
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
+import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
 import 'package:teamxsdk/src/models/partner.dart';
 
 // ignore: todo
@@ -10,12 +11,12 @@ import 'package:teamxsdk/src/models/partner.dart';
 const String aes_encryption_key = "FiugQTgPNwCWUY,VhfmM4cKXTLVFvHFe";
 
 class TXEnryptionManager {
-  static String encrypt({required TXPartnerInterface partner}) {
+  static String encrypt({required TXPartner partner}) {
     final date = TXEnryptionManager.getCurrentDate();
     final session =
         TXEnryptionManager.generateSession(partner: partner, date: date);
     final plainText =
-        "${partner.partnerCode}|${partner.productCode.name.toUpperCase()}|$date|$session";
+        "${partner.code}|${partner.name?.toUpperCase()}|$date|$session";
     // ignore: avoid_print
     //print("Plain Text To Encrypt $plainText");
 
@@ -28,9 +29,8 @@ class TXEnryptionManager {
   }
 
   static String generateSession(
-      {required TXPartnerInterface partner, required String date}) {
-    final plainText =
-        "${partner.partnerCode}|${partner.productCode.name.toUpperCase()}|$date";
+      {required TXPartner partner, required String date}) {
+    final plainText = "${partner.code}|${partner.name?.toUpperCase()}|$date";
 
     final bytes1 = utf8.encode(plainText); // data being hashed
     final digest1 = sha256.convert(bytes1).toString(); // Hashing Process;

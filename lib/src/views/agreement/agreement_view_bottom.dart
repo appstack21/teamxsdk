@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teamxsdk/src/config/configurator.dart';
-import 'package:teamxsdk/src/views/agreement_view.dart';
+import 'package:teamxsdk/src/views/agreement/agreement_view.dart';
+import 'package:teamxsdk/src/views/agreement/agreement_view_model.dart';
 
 class TXAgreementViewBottom extends StatefulWidget {
   final Function callBack;
-  final TXConfigurator configurator;
+  final TXAgreementViewModel viewModel;
   const TXAgreementViewBottom(
-      {Key? key, required this.callBack, required this.configurator})
+      {Key? key, required this.callBack, required this.viewModel})
       : super(key: key);
 
   @override
@@ -25,7 +26,7 @@ class _TXAgreementViewBottomState extends State<TXAgreementViewBottom> {
     return SizedBox(
       height: 450,
       child: TXAgreementView(
-          callBack: didTapActionButton, configurator: widget.configurator),
+          callBack: didTapActionButton, viewModel: widget.viewModel),
     );
   }
 }

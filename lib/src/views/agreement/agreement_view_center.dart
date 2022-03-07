@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teamxsdk/src/config/configurator.dart';
-import 'package:teamxsdk/src/views/agreement_view.dart';
+import 'package:teamxsdk/src/views/agreement/agreement_view.dart';
+import 'package:teamxsdk/src/views/agreement/agreement_view_model.dart';
 
 class TXAgreementViewCenter extends StatefulWidget {
   final Function callBack;
-  final TXConfigurator configurator;
+  final TXAgreementViewModel viewModel;
   const TXAgreementViewCenter(
-      {Key? key, required this.callBack, required this.configurator})
+      {Key? key, required this.callBack, required this.viewModel})
       : super(key: key);
 
   @override
@@ -17,8 +18,7 @@ class TXAgreementViewCenter extends StatefulWidget {
 class _TXAgreementViewCenterState extends State<TXAgreementViewCenter> {
   BoxDecoration decoration() {
     //Setting cornerRadius
-    double? cornerRadius =
-        widget.configurator.agreement.viewStyle?.cornerRadius;
+    double? cornerRadius = widget.viewModel.layout.viewStyle?.cornerRadius;
 
     return BoxDecoration(
         color: Colors.white,
@@ -45,8 +45,7 @@ class _TXAgreementViewCenterState extends State<TXAgreementViewCenter> {
               margin: const EdgeInsets.fromLTRB(16, 44, 16, 44),
               height: 480,
               child: TXAgreementView(
-                  callBack: didTapActionButton,
-                  configurator: widget.configurator),
+                  callBack: didTapActionButton, viewModel: widget.viewModel),
             ),
           ),
         ));

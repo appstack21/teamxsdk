@@ -31,14 +31,19 @@ abstract class TXAgreementInterface {
 ///
 /// ```
 
-class TXAgreement implements TXAgreementInterface {
+class TXAgreementViewLayout implements TXAgreementInterface {
   @override
   TXAgreementPresentationStyle presentationStyle;
 
   @override
   TXAgreementViewStyleInterface? viewStyle;
 
-  TXAgreement({required this.presentationStyle, this.viewStyle});
+  TXAgreementViewLayout({required this.presentationStyle, this.viewStyle});
+
+  static defaultLayout() {
+    return TXAgreementViewLayout(
+        presentationStyle: TXAgreementPresentationStyle.center);
+  }
 }
 
 /// Agreement View presentation style
