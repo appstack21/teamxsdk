@@ -1,4 +1,5 @@
 import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
+import 'package:teamxsdk/src/data_layer/data/entity/policy_request.dart';
 import 'package:teamxsdk/src/data_layer/service/api_result.dart';
 import 'package:teamxsdk/src/data_layer/service/api_service.dart';
 
@@ -10,7 +11,6 @@ class TXInsuranceCardviewModel {
   TXPartner? partner;
   TXAPIService service = TXAPIService();
   void setPartner(TXPartner partner) {
-    print(partner);
     this.partner = partner;
   }
 
@@ -34,19 +34,8 @@ class TXInsuranceCardviewModel {
     });
   }
 
-  Future<String?> bookPolicy(String code) {
+  Future<TXResult> bookPolicy(dynamic config) {
     // return Future.delayed(const Duration(seconds: 2), () => 'A6908AHBGGL');
-    return Future.delayed(const Duration(seconds: 2), () => null);
-    // return service.bookPolicy(token, code).then((response) {
-    //   if (response is SuccessState) {
-    //     if (response.value is String) {
-    //       return response;
-    //     }
-    //   } else if (response is ErrorState) {
-    //     return response;
-    //   } else {
-    //     return response;
-    //   }
-    // });
+    return service.bookPolicy(token, config);
   }
 }

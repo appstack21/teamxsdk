@@ -41,7 +41,9 @@ class TXCardView extends StatefulWidget {
   final Function({required String policyId}) onBookePolicy;
   final Function({required bool isOpted, required double? insuranceFee})
       onInsuranceOpted;
-  final Function({required TXError error}) onInsuranceError;
+  final Function(
+      {required TXErrorType error,
+      required TXInsuranceAction action}) onInsuranceError;
 
   @override
   // ignore: no_logic_in_create_state
@@ -78,9 +80,7 @@ class _TXCardViewState extends State<TXCardView> {
   }
 
   void initialize(String token) {
-    if (kDebugMode) {
-      print("Initialized");
-    }
+    if (kDebugMode) {}
   }
 
   void setInsuranceLayout(TXInsuranceLayout layout) {
@@ -97,29 +97,32 @@ class _TXCardViewState extends State<TXCardView> {
 
   void purchasePolicy(String config) {
     if (kDebugMode) {
-      print("Purchase policy clicked");
+      print("PURCHASE POLICY CLICKED");
     }
-    viewModel.bookPolicy("code").then((value) {
-      if (value != null) {
-        widget.onBookePolicy(policyId: value);
-      } else {
+    viewModel.bookPolicy("code").then((response) {
+      if (response is SuccessState) {
+        var policy = response.value as TXBookPolicyResponse;
+        if (policy.policyNumber != null) {
+          widget.onBookePolicy(policyId: policy.policyNumber!);
+        } else {}
+      } else if (response is ErrorState) {
+        var error = response.error as TXErrorType;
         widget.onInsuranceError(
-            error: InvalidInputException("Something Wrong"));
+            error: error, action: TXInsuranceAction.bookPolicy);
       }
     });
   }
 
   void loadPartner() {
-    if (kDebugMode) {
-      print("LOAD PARTNER");
-    }
     if (widget.config != null) {
       var jsonString = widget.config as String;
       var response = TXPartnerResponse.fromRawJson(jsonString);
       if (response.partner != null) {
         viewModel.setPartner(response.partner!);
       } else {
-        widget.onInsuranceError(error: BadRequestException("Invlid Config"));
+        widget.onInsuranceError(
+            error: TXErrorType.invalidConfig,
+            action: TXInsuranceAction.initialize);
       }
     } else {
       viewModel.loadPartner("code").then((response) {
@@ -127,37 +130,30 @@ class _TXCardViewState extends State<TXCardView> {
           setState(() {
             isInitialized = true;
           });
-          if (kDebugMode) {
-            print("PARTNER LOADED");
-          }
           widget.onInitialized();
         } else if (response is ErrorState) {
-          widget.onInsuranceError(error: BadRequestException("Invlid Config"));
+          var error = response.error as TXErrorType;
+          widget.onInsuranceError(
+              error: error, action: TXInsuranceAction.initialize);
         }
       });
     }
   }
 
   void loadData(TXBillData billData) {
-    if (kDebugMode) {
-      print(billData.productCode);
-      print("LOADING BILL DATA");
-    }
-    var partner = viewModel.getPartner;
-    selectedProduct =
-        partner?.getProductDetailFromProductCode(billData.productCode);
-    if (kDebugMode) {
-      print("Selected Product $selectedProduct");
-    }
-    setState(() {
-      this.billData = billData;
-      isInitialized = true;
-      isLoaded = true;
-      if (kDebugMode) {
-        print("BILL DATA LOADED");
-      }
+    if (viewModel.getPartner != null) {
+      selectedProduct = viewModel.getPartner
+          ?.getProductDetailFromProductCode(billData.productCode);
+      setState(() {
+        this.billData = billData;
+        isInitialized = true;
+        isLoaded = true;
+      });
       widget.onLoad();
-    });
+    } else {
+      widget.onInsuranceError(
+          error: TXErrorType.loadFailed, action: TXInsuranceAction.load);
+    }
   }
 
   didTapOnToggle(bool isChanged) {
@@ -165,7 +161,7 @@ class _TXCardViewState extends State<TXCardView> {
     if (!isShowModel && viewModel.getPartner != null) {
       final text = TXEnryptionManager.encrypt(partner: viewModel.partner!);
       if (kDebugMode) {
-        print("Encrypted Text $text");
+        // print("Encrypted Text $text");
       }
       widget.onInsuranceOpted(isOpted: true, insuranceFee: insuranceFee);
       return;
@@ -173,7 +169,6 @@ class _TXCardViewState extends State<TXCardView> {
 
     if (isChanged) {
       if (billData != null && viewModel.getPartner != null) {
-        // ignore: unrelated_type_equality_checks
         if (agreementLayout.presentationStyle ==
             TXAgreementPresentationStyle.center) {
           showGeneralDialog(
@@ -246,7 +241,6 @@ class _TXCardViewState extends State<TXCardView> {
       setState(() {
         insuranceFee = fee;
       });
-      // TXCountry? country = billData?.country;
 
       Color? titleColor = HexColor.fromHex(layout.cardViewStyle?.titleColor);
       String feeText = " ${billData?.country.currency ?? ""} $fee ";

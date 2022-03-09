@@ -19,8 +19,10 @@ class TXAPIClient {
                 queryParameters: request.params),
             headers: request.headers);
       case TXRequestType.post:
+        var encodedData = request.params;
+        print("ENCODED DATA: - $encodedData");
         return client.post(Uri(host: request.baseUrl, path: request.path),
-            headers: request.headers, body: json.encode(request.params));
+            headers: request.headers, body: encodedData);
     }
   }
 }

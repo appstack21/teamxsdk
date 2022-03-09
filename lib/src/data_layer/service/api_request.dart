@@ -42,3 +42,46 @@ class TXServiceRequest implements TXTarget {
   @override
   TXRequestType requestType;
 }
+
+class TXHTTPHeader {
+  String? token;
+  static var country = "sg";
+  static var product = "staycation";
+  static var partner = "dbs";
+  static var campaign = "pweb-sp";
+  static var contentType = "application/json";
+  static var authoraization = "Authorization";
+  static var apiVersion = "apiVersion";
+
+  static var subscriptionKey = "Ocp-Apim-Subscription-Key";
+
+  Object bookPolicyHeader() {
+    return {
+      "Content-Type": TXHTTPHeader.contentType,
+      "country": TXHTTPHeader.country,
+      "product": TXHTTPHeader.product,
+      "partner": TXHTTPHeader.partner,
+      "campaign": TXHTTPHeader.campaign,
+    };
+  }
+
+  Object commonHeader() {
+    if (token != null) {
+      return {
+        "Authorization": "Bearer $token",
+        "Content-Type": TXHTTPHeader.contentType,
+        "country": TXHTTPHeader.country,
+        "product": TXHTTPHeader.product,
+        "partner": TXHTTPHeader.partner,
+        "campaign": TXHTTPHeader.campaign,
+      };
+    }
+    return {
+      "Content-Type": TXHTTPHeader.contentType,
+      "country": TXHTTPHeader.country,
+      "product": TXHTTPHeader.product,
+      "partner": TXHTTPHeader.partner,
+      "campaign": TXHTTPHeader.campaign,
+    };
+  }
+}

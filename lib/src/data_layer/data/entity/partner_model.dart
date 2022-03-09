@@ -143,7 +143,6 @@ class TXPartner {
   }
 
   TXProduct? getProductDetailFromProductCode(TXProductCode code) {
-    print("Coede$code");
     var filterProducts = products?.where((element) {
       return element.code == code.productName;
     }).toList();

@@ -8,7 +8,7 @@ abstract class TXInsuranceViewCallBackInterface {
   void onLoad();
   void onInsuranceOpted(bool isOpted, double? insuranceFee);
   void onPurchasePolicy(String policyId);
-  void onInsuranceError(TXError error);
+  void onInsuranceError(TXErrorType error);
 }
 
 class TXInsuranceViewController {
