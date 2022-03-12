@@ -14,7 +14,6 @@ import 'package:teamxsdk/src/utility/encryption_manager.dart';
 import 'package:teamxsdk/src/utility/insurance_manager.dart';
 import 'package:teamxsdk/src/views/agreement/agreement_view_center.dart';
 import 'package:teamxsdk/src/views/agreement/agreement_view_model.dart';
-import 'package:teamxsdk/src/views/components/progress_dialog.dart';
 import 'package:teamxsdk/src/views/insurance/insurance_card_view_model.dart';
 import 'package:teamxsdk/teamxsdk.dart';
 

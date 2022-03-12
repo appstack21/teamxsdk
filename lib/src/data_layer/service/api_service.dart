@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:teamxsdk/src/data_layer/data/entity/policy_request.dart';
@@ -30,11 +31,16 @@ class TXAPIService implements TXAPIServiceInterface {
           requestType: TXRequestType.post,
           headers: header.bookPolicyHeader(),
           params: policyRequestData.toRawJson());
+
       var response = await client.sendRequest(request);
+      print(jsonDecode(response.body));
+      print("RESPONSE $response");
       response = _returnResponse(response);
+
       return TXResult<TXBookPolicyResponse>.success(
           TXBookPolicyResponse.fromRawJson(response.body));
     } catch (e) {
+      print(e);
       if (e is TXErrorType) {
         return TXResult.error(e);
       } else if (e is Exception) {

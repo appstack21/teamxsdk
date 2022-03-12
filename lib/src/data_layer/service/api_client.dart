@@ -19,10 +19,12 @@ class TXAPIClient {
                 queryParameters: request.params),
             headers: request.headers);
       case TXRequestType.post:
+        final _authority = request.baseUrl;
+        final _path = request.path;
+        late Uri uri;
+        uri = Uri.https(_authority, _path);
         var encodedData = request.params;
-        print("ENCODED DATA: - $encodedData");
-        return client.post(Uri(host: request.baseUrl, path: request.path),
-            headers: request.headers, body: encodedData);
+        return client.post(uri, headers: request.headers, body: encodedData);
     }
   }
 }

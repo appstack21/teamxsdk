@@ -173,11 +173,16 @@ class TXPolicyBookRequest {
 
     insuranceSelection.pricingQuestions = pricingQuestions;
     request.insuranceSelections = insuranceSelection;
-    // if (kDebugMode) {
-    //   print(request.toRawJson());
-    // }
 
+    // printLongString(jsonEncode(request));
     return request;
+  }
+
+  static void printLongString(String text) {
+    final RegExp pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
+    pattern
+        .allMatches(text)
+        .forEach((RegExpMatch match) => print(match.group(0)));
   }
 }
 
@@ -382,7 +387,7 @@ class InsuranceSelections {
         "payment_type": paymentType,
         "payment_details":
             paymentDetails == null ? null : paymentDetails!.toJson(),
-        "offer_id": offerId,
+        "offer_id": offerId ?? "1",
         "offer": offer == null ? null : offer!.toJson(),
         "pricing_questions": pricingQuestions == null
             ? null
@@ -666,10 +671,18 @@ class Value {
         description: json["description"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "code": code,
-        "description": description,
-      };
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+
+    if (code != null) {
+      json["code"] = code;
+      json["description"] = description;
+    } else {
+      json["description"] = description;
+    }
+
+    return json;
+  }
 }
 
 class Insured {
