@@ -1,6 +1,6 @@
 // ignore: file_names
 import 'package:teamxsdk/src/config/config.dart';
-import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
+import 'package:teamxservice/teamxservice.dart';
 
 abstract class TXBillDataInterFace {
   late String product;
@@ -18,15 +18,15 @@ class TXBillData implements TXBillDataInterFace {
   @override
   String product;
 
-  TXProductCode get productCode {
-    if (product == TXProductCode.purchaseProtect.productName) {
-      return TXProductCode.purchaseProtect;
-    } else if (product == TXProductCode.billProtect.productName) {
-      return TXProductCode.billProtect;
-    } else if (product == TXProductCode.bnplProtect.productName) {
-      return TXProductCode.bnplProtect;
+  TXSProductCode get productCode {
+    if (product == TXSProductCode.purchaseProtect.productName) {
+      return TXSProductCode.purchaseProtect;
+    } else if (product == TXSProductCode.billProtect.productName) {
+      return TXSProductCode.billProtect;
+    } else if (product == TXSProductCode.bnplProtect.productName) {
+      return TXSProductCode.bnplProtect;
     } else {
-      return TXProductCode.eventCancelation;
+      return TXSProductCode.eventCancelation;
     }
   }
 

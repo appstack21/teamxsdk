@@ -6,16 +6,13 @@ import 'package:flutter/material.dart';
 
 import 'package:teamxsdk/src/constants/constants.dart';
 import 'package:teamxsdk/src/constants/style.dart';
-import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
-import 'package:teamxsdk/src/data_layer/data/response/api_response.dart';
-import 'package:teamxsdk/src/data_layer/service/api_error.dart';
-import 'package:teamxsdk/src/data_layer/service/api_result.dart';
 import 'package:teamxsdk/src/utility/encryption_manager.dart';
 import 'package:teamxsdk/src/utility/insurance_manager.dart';
 import 'package:teamxsdk/src/views/agreement/agreement_view_center.dart';
 import 'package:teamxsdk/src/views/agreement/agreement_view_model.dart';
 import 'package:teamxsdk/src/views/insurance/insurance_card_view_model.dart';
 import 'package:teamxsdk/teamxsdk.dart';
+import 'package:teamxservice/teamxservice.dart';
 
 class TXCardView extends StatefulWidget {
   const TXCardView(
@@ -41,8 +38,8 @@ class TXCardView extends StatefulWidget {
   final Function({required bool isOpted, required double? insuranceFee})
       onInsuranceOpted;
   final Function(
-      {required TXErrorType error,
-      required TXInsuranceAction action}) onInsuranceError;
+      {required TXSErrorType error,
+      required TXSInsuranceAction action}) onInsuranceError;
 
   @override
   // ignore: no_logic_in_create_state
@@ -65,7 +62,7 @@ class _TXCardViewState extends State<TXCardView> {
   bool isLoaded = false;
 
   TXBillData? billData;
-  TXProduct? selectedProduct;
+  TXSProduct? selectedProduct;
   late TXInsuranceCardviewModel viewModel;
 
   TXInsuranceLayout layout = TXInsuranceLayout.defaultLayout();
@@ -105,9 +102,9 @@ class _TXCardViewState extends State<TXCardView> {
           widget.onBookePolicy(policyId: policy.policyNumber!);
         } else {}
       } else if (response is ErrorState) {
-        var error = response.error as TXErrorType;
+        var error = response.error as TXSErrorType;
         widget.onInsuranceError(
-            error: error, action: TXInsuranceAction.bookPolicy);
+            error: error, action: TXSInsuranceAction.bookPolicy);
       }
     });
   }
@@ -115,13 +112,13 @@ class _TXCardViewState extends State<TXCardView> {
   void loadPartner() {
     if (widget.config != null) {
       var jsonString = widget.config as String;
-      var response = TXPartnerResponse.fromRawJson(jsonString);
+      var response = TXSPartnerResponse.fromRawJson(jsonString);
       if (response.partner != null) {
         viewModel.setPartner(response.partner!);
       } else {
         widget.onInsuranceError(
-            error: TXErrorType.invalidConfig,
-            action: TXInsuranceAction.initialize);
+            error: TXSErrorType.invalidConfig,
+            action: TXSInsuranceAction.initialize);
       }
     } else {
       viewModel.loadPartner("code").then((response) {
@@ -131,9 +128,9 @@ class _TXCardViewState extends State<TXCardView> {
           });
           widget.onInitialized();
         } else if (response is ErrorState) {
-          var error = response.error as TXErrorType;
+          var error = response.error as TXSErrorType;
           widget.onInsuranceError(
-              error: error, action: TXInsuranceAction.initialize);
+              error: error, action: TXSInsuranceAction.initialize);
         }
       });
     }
@@ -151,7 +148,7 @@ class _TXCardViewState extends State<TXCardView> {
       widget.onLoad();
     } else {
       widget.onInsuranceError(
-          error: TXErrorType.loadFailed, action: TXInsuranceAction.load);
+          error: TXSErrorType.loadFailed, action: TXSInsuranceAction.load);
     }
   }
 

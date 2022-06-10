@@ -1,14 +1,14 @@
-import 'package:teamxsdk/src/data_layer/service/api_error.dart';
 import 'package:teamxsdk/src/models/agreement.dart';
 import 'package:teamxsdk/src/models/insurance_card.dart';
 import 'package:teamxsdk/src/models/partner.dart';
+import 'package:teamxservice/teamxservice.dart';
 
 abstract class TXInsuranceViewCallBackInterface {
   void onInitialized(TXInsuranceViewController controller);
   void onLoad();
   void onInsuranceOpted(bool isOpted, double? insuranceFee);
   void onPurchasePolicy(String policyId);
-  void onInsuranceError(TXErrorType error);
+  void onInsuranceError(TXSErrorType error);
 }
 
 class TXInsuranceViewController {

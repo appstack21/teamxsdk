@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'package:encrypt/encrypt.dart';
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
-import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
-import 'package:teamxsdk/src/models/partner.dart';
+import 'package:teamxservice/teamxservice.dart';
 
 // ignore: todo
 //TODO Read from API
@@ -11,7 +10,7 @@ import 'package:teamxsdk/src/models/partner.dart';
 const String aes_encryption_key = "FiugQTgPNwCWUY,VhfmM4cKXTLVFvHFe";
 
 class TXEnryptionManager {
-  static String encrypt({required TXPartner partner}) {
+  static String encrypt({required TXSPartner partner}) {
     final date = TXEnryptionManager.getCurrentDate();
     final session =
         TXEnryptionManager.generateSession(partner: partner, date: date);
@@ -29,7 +28,7 @@ class TXEnryptionManager {
   }
 
   static String generateSession(
-      {required TXPartner partner, required String date}) {
+      {required TXSPartner partner, required String date}) {
     final plainText = "${partner.code}|${partner.name?.toUpperCase()}|$date";
 
     final bytes1 = utf8.encode(plainText); // data being hashed

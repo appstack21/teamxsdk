@@ -1,9 +1,9 @@
-import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
 import 'package:teamxsdk/teamxsdk.dart';
+import 'package:teamxservice/teamxservice.dart';
 
 class TXAgreementViewModel {
   final TXBillData billData;
-  final TXPartner partner;
+  final TXSPartner partner;
   final TXAgreementViewLayout layout;
 
   TXAgreementViewModel(

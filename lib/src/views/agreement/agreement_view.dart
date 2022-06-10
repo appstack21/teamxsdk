@@ -1,13 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:teamxsdk/src/config/config.dart';
-import 'package:teamxsdk/src/config/configurator.dart';
-import 'package:teamxsdk/src/config/txhelper.dart';
 import 'package:teamxsdk/src/constants/constants.dart';
 import 'package:teamxsdk/src/constants/style.dart';
-import 'package:teamxsdk/src/data_layer/data/entity/partner_model.dart';
+import 'package:teamxservice/teamxservice.dart';
 import 'package:teamxsdk/src/utility/encryption_manager.dart';
 import 'package:teamxsdk/src/views/agreement/agreement_view_model.dart';
 
@@ -28,7 +23,7 @@ class _TXAgreementViewState extends State<TXAgreementView> {
   Widget getTitleText() {
     String titleText = "${TXStringConstant.agreementTitleText} \n";
 
-    TXProduct? selectedProduct = widget.viewModel.partner
+    TXSProduct? selectedProduct = widget.viewModel.partner
         .getProductDetailFromProductCode(widget.viewModel.billData.productCode);
     String billProtectText = selectedProduct?.name ?? "";
     var ritchText = RichText(
